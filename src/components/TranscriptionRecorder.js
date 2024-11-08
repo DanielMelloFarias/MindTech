@@ -6,6 +6,24 @@ import { Mic, Settings, AlertCircle } from 'lucide-react';
 
 const SAMPLE_RATE = 48000;
 
+// Função auxiliar para solicitar permissões
+const requestPermissions = async () => {
+  try {
+    const streamTemp = await navigator.mediaDevices.getUserMedia({ audio: true });
+    streamTemp.getTracks().forEach(track => track.stop());
+    
+    // Verifica suporte a compartilhamento de tela
+    if (!navigator.mediaDevices.getDisplayMedia) {
+      throw new Error('Seu navegador não suporta compartilhamento de tela');
+    }
+    
+    return true;
+  } catch (error) {
+    console.error('Erro ao verificar permissões:', error);
+    return false;
+  }
+};
+
 const TranscriptionRecorder = ({ patientId, sessionId, onClose }) => {
     const [isRecording, setIsRecording] = useState(false);
     const [micDevices, setMicDevices] = useState([]);
@@ -15,11 +33,26 @@ const TranscriptionRecorder = ({ patientId, sessionId, onClose }) => {
     const [partials, setPartials] = useState('');
     const [error, setError] = useState('');
     const [lastTimeEnd, setLastTimeEnd] = useState(0);
+    const [permissionsGranted, setPermissionsGranted] = useState(false);
 
     const micSocketRef = useRef(null);
     const audioSocketRef = useRef(null);
     const micRecorderRef = useRef(null);
     const audioRecorderRef = useRef(null);
+
+        // Efeito para verificar permissões ao montar
+    useEffect(() => {
+      const checkPermissions = async () => {
+          const hasPermissions = await requestPermissions();
+          setPermissionsGranted(hasPermissions);
+          if (hasPermissions) {
+              await listAudioDevices();
+              await fetchLastTranscriptionEnd();
+          }
+      };
+
+      checkPermissions();
+  }, []);
 
     useEffect(() => {
         listAudioDevices();
@@ -58,44 +91,70 @@ const TranscriptionRecorder = ({ patientId, sessionId, onClose }) => {
         }
     };
 
+    // Modificar o startRecording para verificar permissões primeiro
     const startRecording = async () => {
-        setIsRecording(true);
-        setMicTranscript('');
-        setAudioTranscript('');
-        setPartials('');
-        setError('');
+      if (!permissionsGranted) {
+          const hasPermissions = await requestPermissions();
+          if (!hasPermissions) {
+              setError('Por favor, conceda as permissões necessárias para gravação');
+              return;
+          }
+          setPermissionsGranted(true);
+      }
 
+      setIsRecording(true);
+      setMicTranscript('');
+      setAudioTranscript('');
+      setPartials('');
+      setError('');
+
+      try {
+        // Primeiro pedir compartilhamento de tela
+        let screenStream;
         try {
-            // Primeiro pedir compartilhamento de tela
-            let screenStream;
+            screenStream = await navigator.mediaDevices.getDisplayMedia({
+                video: {
+                    width: 1920,
+                    height: 1080
+                },
+                audio: {
+                    echoCancellation: true,
+                    noiseSuppression: true,
+                    sampleRate: SAMPLE_RATE
+                }
+            });
+
+            // Adicionar listener para quando o usuário parar o compartilhamento
+            screenStream.getVideoTracks()[0].onended = () => {
+                console.log('Compartilhamento de tela encerrado');
+                stopRecording();
+            };
+
+        } catch (error) {
+            console.warn("Erro ao compartilhar tela:", error);
+            setError("É necessário compartilhar a tela para capturar o áudio do sistema");
+            setIsRecording(false);
+            return;
+        }
+
+            // Depois pedir acesso ao microfone
+            let micStream;
             try {
-                screenStream = await navigator.mediaDevices.getDisplayMedia({
-                    video: {
-                        width: 1920,
-                        height: 1080
-                    },
+                micStream = await navigator.mediaDevices.getUserMedia({
                     audio: {
+                        deviceId: selectedMicDevice ? { exact: selectedMicDevice } : undefined,
                         echoCancellation: true,
                         noiseSuppression: true,
                         sampleRate: SAMPLE_RATE
                     }
                 });
             } catch (error) {
-                console.warn("Erro ao compartilhar tela:", error);
-                setError("Por favor, compartilhe sua tela para capturar o áudio do sistema");
+                console.warn("Erro ao acessar microfone:", error);
+                screenStream?.getTracks().forEach(track => track.stop());
+                setError("É necessário permitir acesso ao microfone");
                 setIsRecording(false);
                 return;
             }
-
-            // Depois pedir acesso ao microfone
-            const micStream = await navigator.mediaDevices.getUserMedia({
-                audio: {
-                    deviceId: selectedMicDevice ? { exact: selectedMicDevice } : undefined,
-                    echoCancellation: true,
-                    noiseSuppression: true,
-                    sampleRate: SAMPLE_RATE
-                }
-            });
 
             // Configurar WebSockets
             const micSocketPromise = deferredPromise();
