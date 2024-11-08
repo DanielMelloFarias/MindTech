@@ -40,7 +40,7 @@ const Login = () => {
               Mind Tech
             </h1>
             <p className="text-slate-600 text-sm md:text-base">
-              Transformando sessões em insights
+              Transformando sessões em insights!!!
             </p>
           </div>
 
