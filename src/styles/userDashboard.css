@@ -1,0 +1,362 @@
+/* src/styles/userDashboard.css */
+:root {
+    --primary-color: #4361ee;
+    --secondary-color: #3f37c9;
+    --success-color: #4cc9f0;
+    --danger-color: #f72585;
+    --dark-bg: #1a1a1a;
+    --card-bg: #ffffff;
+    --text-primary: #2b2d42;
+    --text-secondary: #8d99ae;
+    --transition: all 0.3s ease-in-out;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  body {
+    background: linear-gradient(135deg, #0f0f0f 0%, #2b2d42 100%);
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    color: var(--text-primary);
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  .dashboard-container {
+    padding: 20px;
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+  
+  /* Header Styling */
+  .dashboard-header {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 24px 32px; /* Aumentei o padding para dar mais espaço */
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+  
+  .user-info {
+    color: white;
+    flex: 1; /* Permite que ocupe o espaço disponível */
+  }
+  
+  .user-info h2 {
+    font-size: 1.75rem; /* Diminui um pouco para melhor hierarquia */
+    margin: 0 0 8px 0;
+    font-weight: 700;
+    color: #4361ee; /* Cor mais chamativa para o título */
+  }
+  
+  .user-info p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+    opacity: 0.9;
+  }
+  
+  .actions {
+    display: flex;
+    gap: 20px; /* Aumentei o espaço entre os elementos */
+    align-items: center;
+    margin-left: auto; /* Empurra para a direita */
+  }
+  
+  .search-bar {
+    background: rgba(255, 255, 255, 0.9); /* Fundo mais claro para melhor visibilidade */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px; /* Reduzi o border-radius para combinar com o design */
+    padding: 10px 16px;
+    color: #2b2d42; /* Cor mais escura para melhor contraste */
+    width: 280px;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+  }
+  
+  .search-bar:focus {
+    outline: none;
+    background: #ffffff;
+    border-color: #4361ee;
+    box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.1);
+  }
+  
+  .search-bar::placeholder {
+    color: #8d99ae;
+  }
+  
+  .sign-out-button {
+    background: #f72585;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    white-space: nowrap; /* Evita quebra do texto */
+  }
+  
+  .sign-out-button:hover {
+    background: #e91e63;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(247, 37, 133, 0.2);
+  }
+  
+  /* Add Patient Button */
+  .add-patient-button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 30px;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: fit-content;
+  }
+  
+  .add-patient-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(67, 97, 238, 0.4);
+  }
+  
+  /* Patients Grid */
+  .patients-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    padding: 20px 0;
+  }
+  
+  .patient-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 20px;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .patient-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  }
+  
+  .patient-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--success-color));
+  }
+  
+  .patient-img-placeholder {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
+    border-radius: 50%;
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .patient-card h3 {
+    margin: 0 0 15px 0;
+    font-size: 1.5rem;
+    color: var(--text-primary);
+  }
+  
+  .patient-info {
+    margin: 15px 0;
+  }
+  
+  .patient-info p {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 8px 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+  }
+  
+  .card-actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .card-actions button {
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  
+  .edit-button {
+    background: var(--success-color);
+    color: white;
+  }
+  
+  .remove-button {
+    background: var(--danger-color);
+    color: white;
+  }
+  
+  .view-button {
+    background: var(--primary-color);
+    color: white;
+  }
+  
+  .card-actions button:hover {
+    transform: translateY(-2px);
+    filter: brightness(110%);
+  }
+  
+  /* Modal Styles */
+  .confirm-modal,
+  .edit-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    animation: modalSlideIn 0.3s ease-out;
+
+  }
+  
+  @keyframes modalSlideIn {
+    from {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  .modal-content h3 {
+    margin: 0 0 20px 0;
+    color: var(--text-primary);
+    font-size: 1.5rem;
+  }
+  
+  .modal-content input {
+    width: 95%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: var(--transition);
+  }
+  
+  .modal-content input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+  }
+  
+  .modal-content button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    margin: 5px;
+  }
+
+  .modal-content .cancel-button, .modal-content .delet-button{
+    background-color: #e41919;
+  }
+  
+  .modal-content .cancel-button:hover, .modal-content .delet-button:hover{
+    background-color: #b32424;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .dashboard-header {
+      padding: 20px;
+      flex-direction: column;
+      gap: 20px;
+    }
+  
+    .actions {
+      width: 100%;
+      flex-direction: row; /* Mantém na horizontal em telas menores */
+      justify-content: space-between;
+    }
+  
+    .search-bar {
+      width: 60%; /* Ajusta a largura proporcionalmente */
+    }
+
+    .sign-out-button {
+      padding: 10px 16px;
+    }
+  
+    .patients-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .card-actions {
+      grid-template-columns: 1fr;
+    }
+
+    .modal-content{
+        margin: 20px;
+    }
+  }
+  
+  /* Empty State */
+  .empty-state {
+    text-align: center;
+    padding: 40px;
+    color: white;
+  }
+  
+  .empty-state p {
+    font-size: 1.2rem;
+    margin: 10px 0;
+    opacity: 0.8;
+  }

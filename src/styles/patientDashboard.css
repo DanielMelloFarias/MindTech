@@ -1,0 +1,246 @@
+.patient-dashboard-container {
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+    font-size: 1.1rem;
+}
+
+h2 {
+    text-align: center;
+    color: #007bff;
+}
+
+/* Botão para adicionar nova sessão */
+.add-session-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 15px 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 20px 0;
+    font-size: 1.1rem;
+    display: block;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.sessions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.session-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    gap: 20px;
+    align-items: start;
+}
+
+.session-info p,
+.session-keypoints p {
+    font-size: 1.1rem;
+    margin: 5px 0;
+}
+
+.session-keypoints,
+.session-info {
+    max-width: 300px;
+    overflow: hidden;
+    white-space: pre-wrap;
+    text-overflow: ellipsis;
+}
+
+.session-actions {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Botões de ação */
+.edit-btn,
+.delete-btn,
+.record-btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.edit-btn {
+    background-color: #13882e;
+    color: #fff;
+}
+
+.edit-btn:hover {
+    background-color: #47af5f;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.delete-btn:hover {
+    background-color: #cf5763;
+}
+
+.record-btn {
+    background-color: #ffc107;
+    color: #333;
+}
+
+.record-btn:hover {
+    background-color: #ffc107b0;
+}
+
+/* Transcription section with scroll */
+.transcription-section {
+    background-color: #1a1a2e;
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+    margin-top: 20px;
+    max-height: 400px; /* Define a altura máxima da área de transcrição */
+    overflow-y: auto; /* Adiciona rolagem vertical */
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px; /* Adiciona espaço entre os elementos filhos */
+    margin-top: 10px;
+  }
+
+/* Estilo para todos os botões de cancelar */
+.cancel-button {
+    background-color: #dc3545; /* Vermelho */
+    color: #fff;
+}
+
+.cancel-button:hover {
+    background-color: #cf5763; /* Vermelho mais escuro */
+}
+
+
+/* Estilos para os textos de transcrição */
+.transcription-section h3 {
+    color: #00aaff;
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+}
+
+.transcription-section p {
+    color: #e0e0e0;
+    margin: 5px 0;
+    line-height: 1.6;
+}
+
+.transcription-section .transcription-title {
+    color: #ffffff;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+/* Barra de rolagem personalizada */
+.transcription-section::-webkit-scrollbar {
+    width: 8px;
+}
+
+.transcription-section::-webkit-scrollbar-track {
+    background: #2e2e2e;
+}
+
+.transcription-section::-webkit-scrollbar-thumb {
+    background-color: #4d4d4d;
+    border-radius: 10px;
+    border: 2px solid #2e2e2e;
+}
+
+/* Modal e botão de voltar */
+.modal-background,
+.confirm-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.back-button {
+    background-color: #6c757d;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    display: inline-block;
+}
+
+.back-button:hover {
+    background-color: #5a6268;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .patient-dashboard-container {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .add-session-button {
+        font-size: 1rem;
+        padding: 12px 24px;
+    }
+
+    .session-card {
+        grid-template-columns: 1fr;
+    }
+
+    .session-info p,
+    .session-keypoints p {
+        font-size: 1rem;
+    }
+
+    .modal-content {
+        padding: 10px;
+    }
+
+    .save-session-button,
+    .cancel-button {
+        padding: 8px 16px;
+        font-size: 0.9rem;        
+    }
+    
+    .transcription-section {
+        max-height: 300px; /* Ajusta a altura máxima no mobile */
+    }
+}

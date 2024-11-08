@@ -1,0 +1,132 @@
+/* src/components/transcriptionViewer.css */
+
+.transcription-viewer {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    color: #333333;
+    font-family: Arial, sans-serif;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.transcription-viewer h2 {
+    text-align: center;
+    color: #1a73e8;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+/* Botão de voltar */
+.back-button {
+    background-color: #1a73e8;
+    color: #fff;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    transition: background-color 0.3s;
+    align-self: flex-start;
+}
+
+.back-button:hover {
+    background-color: #1557b3;
+}
+
+/* Barra de pesquisa */
+.search-bar {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+/* Botões de ação */
+.actions-container {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.action-button {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    color: #fff;
+    background-color: #1a73e8;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.action-button:hover {
+    background-color: #1557b3;
+}
+
+/* Lista de transcrições com área de scroll */
+.transcriptions-list {
+    max-height: 400px; /* Limite de altura para a lista */
+    overflow-y: auto; /* Habilita o scroll vertical */
+    width: 100%;
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+/* Estilo de cada item de transcrição */
+.transcription-item {
+    display: flex;
+    align-items: center; /* Mudamos de flex-start para center */
+    padding: 10px 0;
+    font-size: 0.95rem;
+    /*border-bottom: 1px solid #ddd;*/
+}
+
+.transcription-item:last-child {
+    border-bottom: none; /* Remove a borda do último item */
+}
+
+/* Estilo para o tempo */
+.time-stamp {
+    min-width: 80px;
+    font-weight: bold;
+    color: #666;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Adicione isso para alinhar o conteúdo */
+    height: 100%; /* Garante que ocupe toda a altura */
+    padding-top: 2px; /* Pequeno ajuste fino se necessário */
+}
+
+/* Estilo para o texto da transcrição */
+.transcription-text {
+    color: #333;
+    line-height: 1.4;
+    margin-left: 10px;
+    flex: 1; /* Expande para ocupar o restante do espaço */
+}
+
+/* Mensagem de "nenhuma transcrição encontrada" */
+.no-results {
+    text-align: center;
+    font-size: 1rem;
+    color: #666;
+    margin-top: 20px;
+}

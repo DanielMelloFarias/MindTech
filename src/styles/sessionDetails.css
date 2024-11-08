@@ -1,0 +1,52 @@
+/* src/styles/sessionDetails.css */
+.session-details-container {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+    text-align: left;
+  }
+  
+  .conversation-list {
+    margin-top: 20px;
+  }
+  
+  .conversation-item {
+    display: flex;
+    align-items: center; /* Alinha os elementos verticalmente ao centro */
+    margin-bottom: 10px;
+  }
+  
+  .time-stamp {
+    font-weight: bold;
+    margin-right: 10px;
+    color: #555;
+    min-width: 50px;
+    text-align: center; /* Centraliza o texto dentro do bloco de tempo */
+  }
+  
+  .transcription-text {
+    background: #f1f1f1;
+    border-radius: 8px;
+    padding: 10px;
+    flex: 1;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  button {
+    background: #0052cc;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  
+  button:hover {
+    background: #003d99;
+  }
+  

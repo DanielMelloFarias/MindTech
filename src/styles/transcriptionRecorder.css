@@ -1,0 +1,123 @@
+/* Container principal para a transcrição */
+.transcription-recorder {
+    font-family: Arial, sans-serif;
+    color: #ffffff;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #1e1e2f; /* Fundo escuro para maior contraste */
+    border-radius: 8px;
+}
+
+/* Título principal */
+.transcription-recorder h2 {
+    text-align: center;
+    color: #3498db; /* Azul claro */
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+}
+
+/* Seletor de dispositivos de microfone */
+.transcription-recorder select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #3498db;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    background-color: #2a2a3d;
+    color: #ffffff;
+}
+
+/* Botão de gravação */
+.transcription-recorder button {
+    width: 100%;
+    padding: 12px;
+    background-color: #3498db; /* Azul claro */
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.transcription-recorder button:hover {
+    background-color: #1e8bc3; /* Azul mais escuro para hover */
+}
+
+/* Estilo das seções de transcrição */
+.transcription-recorder h3, .transcription-recorder h4 {
+    color: #ffffff;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+}
+
+/* Conteúdo da transcrição */
+.transcription-recorder .transcription-content {
+    background-color: #2a2a3d; /* Fundo intermediário para diferenciar do container */
+    padding: 15px;
+    border-radius: 4px;
+    font-size: 1rem;
+    color: #dcdcdc; /* Cinza claro para melhor contraste */
+    line-height: 1.5;
+    overflow-wrap: break-word;
+    margin-bottom: 20px;
+}
+
+/* Estilo da transcrição parcial */
+.transcription-recorder #partials {
+    color: #f1c40f; /* Cor amarela para o texto parcial */
+    font-style: italic;
+}
+
+/* Modal background */
+.modal-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  /* Modal content */
+  .modal-content {
+    background: #fff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    text-align: center;
+    max-width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .modal-content h3 {
+    margin-bottom: 15px;
+    color: #333;
+  }
+  
+  .modal-content p {
+    color: #666;
+    margin-bottom: 20px;
+  }
+  
+  .modal-content button {
+    background-color: #1a73e8;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 10px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+  
+  .modal-content button:hover {
+    background-color: #1557b3;
+  }
