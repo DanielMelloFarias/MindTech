@@ -18,7 +18,7 @@ export const calculateDuration = (timeBegin, timeEnd) => {
   const endSeconds = endParts[0] * 60 + endParts[1];
   
   return endSeconds - beginSeconds;
-};
+};   
 
 // Função para salvar transcrição
 export const saveTranscription = async (data, audioSource, patientId, sessionId, lastTimeEnd = 0) => {
