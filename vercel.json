@@ -5,9 +5,7 @@
         "destination": "/index.html"
       }
     ],
-    "env": {
-      "REACT_APP_GLADIA_API_KEY": "@gladia-api-key",
-      "REACT_APP_GROQ_API_KEY": "@groq-api-key",
+    "env": {      
       "REACT_APP_FIREBASE_API_KEY": "@firebase-api-key",
       "REACT_APP_FIREBASE_AUTH_DOMAIN": "@firebase-auth-domain",
       "REACT_APP_FIREBASE_PROJECT_ID": "@firebase-project-id",
