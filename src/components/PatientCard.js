@@ -26,7 +26,7 @@ const PatientCard = ({ patient, onEdit, onDelete, onViewSessions }) => {
 
     // Se já passou este ano, ajusta para o próximo
     if (thisYearBirthday < today) {
-        thisYearBirthday.setFullYear(today.getFullYear() + 1);
+      thisYearBirthday.setFullYear(today.getFullYear() + 1);
     }
 
     const diffTime = Math.abs(thisYearBirthday - today);
@@ -34,13 +34,13 @@ const PatientCard = ({ patient, onEdit, onDelete, onViewSessions }) => {
 
     // Se o aniversário é hoje
     if (
-        today.getDate() === birthDate.getDate() &&
-        today.getMonth() === birthDate.getMonth()
+      today.getDate() === birthDate.getDate() &&
+      today.getMonth() === birthDate.getMonth()
     ) {
-        return {
-            text: "ANIVERSÁRIO AMANHA!!!",
-            type: "soon"
-        };
+      return {
+        text: "ANIVERSÁRIO AMANHA!!!",
+        type: "soon"
+      };
     }
 
     // Se o aniversário já passou este ano (ou é hoje)
@@ -48,38 +48,38 @@ const PatientCard = ({ patient, onEdit, onDelete, onViewSessions }) => {
     lastBirthday.setFullYear(today.getFullYear());
 
     if (lastBirthday <= today && lastBirthday.getMonth() === today.getMonth()) {
-        const daysSince = Math.floor((today - lastBirthday) / (1000 * 60 * 60 * 24));
+      const daysSince = Math.floor((today - lastBirthday) / (1000 * 60 * 60 * 24));
 
-        if (daysSince === 0) {
-            return {
-                text: "ANIVERSÁRIO HOJE!",
-                type: "today"
-            };
-        } else {
-            return {
-                text: `Fez aniversário há ${daysSince} dias`,
-                type: "past"
-            };
-        }
+      if (daysSince === 0) {
+        return {
+          text: "ANIVERSÁRIO HOJE!",
+          type: "today"
+        };
+      } else {
+        return {
+          text: `Fez aniversário há ${daysSince} dias`,
+          type: "past"
+        };
+      }
     }
 
 
     // Se falta mais de 30 dias
     if (diffDays > 30) {
-        const months = Math.floor(diffDays / 30);
-        const remainingDays = diffDays % 30;
-        return {
-            text: `Faltam ${months} ${months > 1 ? 'meses' : 'mês'}${remainingDays > 0 ? ` e ${remainingDays} dias` : ''}`,
-            type: "future"
-        };
+      const months = Math.floor(diffDays / 30);
+      const remainingDays = diffDays % 30;
+      return {
+        text: `Faltam ${months} ${months > 1 ? 'meses' : 'mês'}${remainingDays > 0 ? ` e ${remainingDays} dias` : ''}`,
+        type: "future"
+      };
     }
 
     // Se falta menos de 30 dias
     return {
-        text: `Faltam ${diffDays} dias`,
-        type: "soon"
+      text: `Faltam ${diffDays} dias`,
+      type: "soon"
     };
-};
+  };
 
   const birthdayInfo = getBirthdayInfo(patient.birthday);
   const age = calculateAge(patient.birthday);
@@ -98,9 +98,12 @@ const PatientCard = ({ patient, onEdit, onDelete, onViewSessions }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 border border-gray-100">
+    <div
+      className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 border border-gray-100 cursor-pointer"
+      onClick={() => onViewSessions(patient)} // Adiciona o clique em todo o card
+    >
       {/* Cabeçalho com Foto */}
-      <div className="p-4 border-b border-gray-100">
+      <div className="p-4 border-b border-gray-100" onClick={e => e.stopPropagation()}> {/* Evita propagação no header */}
         <div className="flex items-start gap-3">
           <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 bg-gray-100">
             {patient.photoURL ? (
@@ -126,11 +129,11 @@ const PatientCard = ({ patient, onEdit, onDelete, onViewSessions }) => {
           </div>
 
           {/* Menu de Ações */}
-          <div className="relative group">
+          <div className="relative group" onClick={e => e.stopPropagation()}> {/* Evita propagação no menu */}
             <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
               <MoreHorizontal className="w-5 h-5 text-gray-400" />
             </button>
-            
+
             <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 z-10">
               <div className="py-1">
                 <button
