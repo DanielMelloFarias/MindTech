@@ -7,7 +7,7 @@ import { collection, addDoc, serverTimestamp, getDocs, query, orderBy, limit } f
 
 const SAMPLE_RATE = 48000;
 
-const TranscriptionRecorder = ({ patientId, sessionId }) => {
+const TranscriptionRecorder = ({ patientId, sessionId, onClose }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [micDevices, setMicDevices] = useState([]);
   const [selectedMicDevice, setSelectedMicDevice] = useState('');
@@ -90,10 +90,10 @@ const TranscriptionRecorder = ({ patientId, sessionId }) => {
     setIsRecording(true);
     setMicTranscript('');
     setAudioTranscript('');
-    setPartials('...');
+    setPartials('');
+    setError('');
 
     try {
-      // Setup WebSocket connections for mic and audio
       const micSocketPromise = deferredPromise();
       const audioSocketPromise = deferredPromise();
 
@@ -103,64 +103,88 @@ const TranscriptionRecorder = ({ patientId, sessionId }) => {
       setupWebSocket(micSocketRef.current, micSocketPromise, setMicTranscript, 'microfone');
       setupWebSocket(audioSocketRef.current, audioSocketPromise, setAudioTranscript, 'sistema');
 
-      // Wait for WebSocket connections to be established
       await Promise.all([micSocketPromise.promise, audioSocketPromise.promise]);
 
-      // Access microphone audio
+      // Primeiro, pedir acesso ao microfone
       const micStream = await navigator.mediaDevices.getUserMedia({
         audio: {
           deviceId: selectedMicDevice ? { exact: selectedMicDevice } : undefined,
           echoCancellation: true,
           noiseSuppression: true,
           sampleRate: SAMPLE_RATE,
-        },
+        }
       });
 
+      // Depois, pedir compartilhamento de tela com áudio
       let screenStream;
-      // Attempt to capture system audio if supported
-      if (navigator.mediaDevices.getDisplayMedia) {
-        try {
-          screenStream = await navigator.mediaDevices.getDisplayMedia({
-            video: false,
-            audio: { sampleRate: SAMPLE_RATE },
-          });
-        } catch (error) {
-          console.warn("System audio capture not supported or denied by the user. Recording only microphone.");
-        }
-      } else {
-        console.warn("System audio capture not supported by the browser. Recording only microphone.");
+      try {
+        screenStream = await navigator.mediaDevices.getDisplayMedia({
+          video: true, // Precisa ser true para funcionar
+          audio: {
+            echoCancellation: true,
+            noiseSuppression: true,
+            sampleRate: SAMPLE_RATE
+          }
+        });
+      } catch (error) {
+        console.warn("Áudio do sistema não disponível:", error);
+        // Continua mesmo sem áudio do sistema
       }
 
+      // Configurar contexto de áudio
       const audioContext = new (window.AudioContext || window.webkitAudioContext)();
       const micDestination = audioContext.createMediaStreamDestination();
       const screenDestination = audioContext.createMediaStreamDestination();
 
+      // Configurar fonte do microfone
       const micSource = audioContext.createMediaStreamSource(micStream);
       micSource.connect(micDestination);
 
-      if (screenStream) {
+      // Configurar fonte do áudio do sistema se disponível
+      if (screenStream?.getAudioTracks().length > 0) {
         const screenAudioTrack = screenStream.getAudioTracks()[0];
         const screenAudioStream = new MediaStream([screenAudioTrack]);
         const screenSource = audioContext.createMediaStreamSource(screenAudioStream);
         screenSource.connect(screenDestination);
       }
 
-      const combinedMicStream = micDestination.stream;
-      const combinedAudioStream = screenDestination?.stream;
-
-      micRecorderRef.current = new RecordRTC(combinedMicStream, {
+      // Criar gravadores
+      micRecorderRef.current = new RecordRTC(micDestination.stream, {
         type: 'audio',
         mimeType: 'audio/wav',
         recorderType: RecordRTC.StereoAudioRecorder,
         timeSlice: 1000,
         async ondataavailable(blob) {
           const buffer = await blob.arrayBuffer();
-          micSocketRef.current.send(buffer.slice(44));
+          micSocketRef.current?.send(buffer.slice(44));
         },
         sampleRate: SAMPLE_RATE,
         desiredSampRate: SAMPLE_RATE,
         numberOfAudioChannels: 1,
       });
+
+      if (screenStream?.getAudioTracks().length > 0) {
+        audioRecorderRef.current = new RecordRTC(screenDestination.stream, {
+          type: 'audio',
+          mimeType: 'audio/wav',
+          recorderType: RecordRTC.StereoAudioRecorder,
+          timeSlice: 1000,
+          async ondataavailable(blob) {
+            const buffer = await blob.arrayBuffer();
+            audioSocketRef.current?.send(buffer.slice(44));
+          },
+          sampleRate: SAMPLE_RATE,
+          desiredSampRate: SAMPLE_RATE,
+          numberOfAudioChannels: 1,
+        });
+
+        audioRecorderRef.current.startRecording();
+      }
+
+      micRecorderRef.current.startRecording();
+     
+      const combinedMicStream = micDestination.stream;
+      const combinedAudioStream = screenDestination?.stream;
 
       if (combinedAudioStream) {
         audioRecorderRef.current = new RecordRTC(combinedAudioStream, {
@@ -239,18 +263,18 @@ const TranscriptionRecorder = ({ patientId, sessionId }) => {
     }
   };
 
-    // Função para converter mm:ss para segundos
-    const convertToSeconds = (timeString) => {
-      const [minutes, seconds] = timeString.split(':').map(Number);
-      return minutes * 60 + seconds;
-    };
-  
-    // Função para converter segundos para mm:ss
-    const formatTime = (seconds) => {
-      const minutes = Math.floor(seconds / 60);
-      const remainingSeconds = Math.floor(seconds % 60);
-      return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
-    };
+  // Função para converter mm:ss para segundos
+  const convertToSeconds = (timeString) => {
+    const [minutes, seconds] = timeString.split(':').map(Number);
+    return minutes * 60 + seconds;
+  };
+
+  // Função para converter segundos para mm:ss
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+  };
 
   const saveTranscriptionToFirebase = async (data, audioSource) => {
 
@@ -278,7 +302,7 @@ const TranscriptionRecorder = ({ patientId, sessionId }) => {
     setLastTimeEnd(adjustedTimeEnd); // Atualiza lastTimeEnd com o novo valor
 
     // Salvando o documento de transcrição no Firebase
-    try {      
+    try {
       await addDoc(collection(db, 'patients', patientId, 'sessions', sessionId, 'transcriptions'), transcriptionData);
       console.log('Transcrição salva no Firebase:', transcriptionData);
     } catch (error) {
