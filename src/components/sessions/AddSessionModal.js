@@ -7,7 +7,7 @@ import { db } from '../../firebase';
 const AddSessionModal = ({ isOpen, onClose, patientId, onSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  
+
   const [formData, setFormData] = useState({
     date: new Date().toISOString().split('T')[0],
     time: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
@@ -53,7 +53,7 @@ const AddSessionModal = ({ isOpen, onClose, patientId, onSuccess }) => {
 
       // Adiciona ao Firestore
       await addDoc(collection(db, 'patients', patientId, 'sessions'), sessionData);
-      
+
       onSuccess?.();
       onClose();
     } catch (error) {
@@ -99,30 +99,42 @@ const AddSessionModal = ({ isOpen, onClose, patientId, onSuccess }) => {
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Data *
                 </label>
-                <div className="relative">
-                  <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <div className="relative flex items-center">
+                  <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none z-10" />
                   <input
                     type="date"
                     value={formData.date}
                     onChange={(e) => setFormData({ ...formData, date: e.target.value })}
                     className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
                     required
+                    style={{
+                      minHeight: '42px',  // Garante altura mínima
+                      WebkitAppearance: 'none',  // Remove aparência nativa no iOS
+                      MozAppearance: 'none',     // Remove aparência nativa no Firefox
+                      appearance: 'none'          // Remove aparência nativa
+                    }}
                   />
                 </div>
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Horário *
                 </label>
-                <div className="relative">
-                  <Clock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <div className="relative flex items-center">
+                  <Clock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none z-10" />
                   <input
                     type="time"
                     value={formData.time}
                     onChange={(e) => setFormData({ ...formData, time: e.target.value })}
                     className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
                     required
+                    style={{
+                      minHeight: '42px',
+                      WebkitAppearance: 'none',
+                      MozAppearance: 'none',
+                      appearance: 'none'
+                    }}
                   />
                 </div>
               </div>
@@ -144,7 +156,7 @@ const AddSessionModal = ({ isOpen, onClose, patientId, onSuccess }) => {
                   <option value="closing">Encerramento</option>
                 </select>
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Duração (minutos) *

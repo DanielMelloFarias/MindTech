@@ -212,49 +212,48 @@ const TranscriptionViewer = ({ patientId, sessionId }) => {
     return (
         <div className="space-y-6">
             {/* Tabs */}
-            <div className="flex space-x-1 border-b border-gray-200">
+            <div className="flex space-x-1 border-b border-gray-200 overflow-x-auto">
                 <button
                     onClick={() => setActiveTab('transcription')}
-                    className={`px-4 py-2 -mb-px text-sm font-medium transition-colors ${activeTab === 'transcription'
-                        ? 'border-b-2 border-teal-500 text-teal-600'
-                        : 'text-gray-500 hover:text-gray-700'
+                    className={`px-2 py-2 -mb-px text-xs sm:text-sm font-medium transition-colors flex items-center gap-1 whitespace-nowrap ${activeTab === 'transcription'
+                            ? 'border-b-2 border-teal-500 text-teal-600'
+                            : 'text-gray-500 hover:text-gray-700'
                         }`}
                 >
-                    <FileText className="w-4 h-4 inline-block mr-2" />
-                    Transcrição
+                    <FileText className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <span>Transcrição</span>
                 </button>
                 <button
                     onClick={() => setActiveTab('summary')}
-                    className={`px-4 py-2 -mb-px text-sm font-medium transition-colors ${activeTab === 'summary'
-                        ? 'border-b-2 border-teal-500 text-teal-600'
-                        : 'text-gray-500 hover:text-gray-700'
+                    className={`px-2 py-2 -mb-px text-xs sm:text-sm font-medium transition-colors flex items-center gap-1 whitespace-nowrap ${activeTab === 'summary'
+                            ? 'border-b-2 border-teal-500 text-teal-600'
+                            : 'text-gray-500 hover:text-gray-700'
                         }`}
                 >
-                    <BrainCircuit className="w-4 h-4 inline-block mr-2" />
-                    Resumo
+                    <BrainCircuit className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <span>Resumo</span>
                 </button>
                 <button
                     onClick={() => setActiveTab('keyPoints')}
-                    className={`px-4 py-2 -mb-px text-sm font-medium transition-colors ${activeTab === 'keyPoints'
-                        ? 'border-b-2 border-teal-500 text-teal-600'
-                        : 'text-gray-500 hover:text-gray-700'
+                    className={`px-2 py-2 -mb-px text-xs sm:text-sm font-medium transition-colors flex items-center gap-1 whitespace-nowrap ${activeTab === 'keyPoints'
+                            ? 'border-b-2 border-teal-500 text-teal-600'
+                            : 'text-gray-500 hover:text-gray-700'
                         }`}
                 >
-                    <List className="w-4 h-4 inline-block mr-2" />
-                    Pontos-chave
+                    <List className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <span>Pontos-chave</span>
                 </button>
                 <button
                     onClick={() => setActiveTab('qa')}
-                    className={`px-4 py-2 -mb-px text-sm font-medium transition-colors ${activeTab === 'qa'
-                        ? 'border-b-2 border-teal-500 text-teal-600'
-                        : 'text-gray-500 hover:text-gray-700'
+                    className={`px-2 py-2 -mb-px text-xs sm:text-sm font-medium transition-colors flex items-center gap-1 whitespace-nowrap ${activeTab === 'qa'
+                            ? 'border-b-2 border-teal-500 text-teal-600'
+                            : 'text-gray-500 hover:text-gray-700'
                         }`}
                 >
-                    <MessageSquare className="w-4 h-4 inline-block mr-2" />
-                    Perguntas
+                    <MessageSquare className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <span>Perguntas</span>
                 </button>
             </div>
-
             {/* Conteúdo */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200">
                 {/* Botão de Download */}
